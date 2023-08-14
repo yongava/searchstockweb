@@ -7,7 +7,7 @@
       <div class="search-box">
   <input v-model="query" placeholder="Find related companies! Try 'Youtube'..." />
   <button @click="fetchData">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-paper-plane">
+    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 " fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-paper-plane">
       <path d="M10 14l11 -11"></path>
       <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"></path>
     </svg>
@@ -139,7 +139,16 @@ export default {
   background: transparent;
   padding-right: 8px;
   padding-top: 5px;
-  align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;  /* updated button size */
+  height: 50px;  /* updated button size */
+
+  svg {
+    width: 30px;  /* adjust SVG size */
+    height: 30px;  /* adjust SVG size */
+  }
 }
 
 .search-box input:focus {
@@ -167,8 +176,7 @@ export default {
   max-width: 584px;
 }
 
-
-/* Add skeleton styles */
+/* Skeleton styles */
 .skeleton {
   width: 100%;
   border: 0px solid #ddd;
@@ -181,7 +189,6 @@ export default {
   margin-top: 2rem;
   margin-left: 1px;
   margin-right: 1px;
-
 }
 
 .skeleton-header, .skeleton-body {
@@ -211,6 +218,4 @@ export default {
     background-position: -100% 0;
   }
 }
-
-
 </style>
