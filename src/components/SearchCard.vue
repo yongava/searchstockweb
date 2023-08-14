@@ -108,7 +108,9 @@ export default {
            result = JSON.parse(content.replace(/'/g, '"'));
        } catch {
            console.log("Failed to parse the message content to JSON");
-           return;
+           this.card.company_symbol = " OOPS !"
+           this.card.company_name = " Something Went Wrong "
+           this.card.opinion = "Can you try search again please 🥲"
        }
 
        // Check if company symbol is available
