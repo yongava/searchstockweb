@@ -62,6 +62,15 @@ https://cdn.discordapp.com/attachments/1004972309100114000/1140608286874406962/Y
       <h3>{{ card.company_name }}</h3>
       <p>{{ card.opinion }}</p>
     </div>
+
+    <div v-if="searchTime" class="search-time">
+    <p>Completed in {{ searchTime }} seconds </p>
+    </div>
+
+    <div v-if="searchTime" class="disclaimer">
+      <p>Please note that this model generally does not possess knowledge of events that have occurred after the vast majority of its training data was collected (i.e., before September 2021), therefore it may not include recent developments or changes in company strategy, market conditions, or other factors that could affect the relevance of these suggested matches.</p>
+    </div>
+
   </div>
 </template>
 
@@ -76,12 +85,14 @@ export default {
     return {
       query: '',
       card: null,
-      isLoading: false
+      isLoading: false,
+      searchTime: null
     };
   },
   methods: {
     async fetchData() {
     this.isLoading = true;
+    let startTime = new Date().getTime(); 
 
     let response;
     let model_list=["gpt-3.5-turbo", "gpt-4"];
@@ -132,6 +143,10 @@ export default {
     }
 
     this.isLoading = false;
+
+    let endTime = new Date().getTime();
+    this.searchTime = ((endTime - startTime) / 1000).toFixed(2); 
+
 
     const logoUrl = `https://logo.clearbit.com/${result['company_symbol']}.com`;
     result['logo_url'] = logoUrl.replace(" ", "");
@@ -312,5 +327,24 @@ export default {
   100% {
     background-position: -100% 0;
   }
+}
+
+.search-time {
+  text-align: center;
+  font-size: 15px;
+  color: #555;
+  margin-top: 1rem;
+}
+
+.disclaimer {
+  width: 100%;
+  margin-top: 1rem;
+  padding: .5rem;
+  text-align: center;
+  color: #555;
+  font-size: 12px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  box-sizing: border-box;
 }
 </style>
