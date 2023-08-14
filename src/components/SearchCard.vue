@@ -7,33 +7,35 @@ https://cdn.discordapp.com/attachments/1004972309100114000/1140608286874406962/Y
     <div class="logo-text">
         <h2>Discover most related company to your keyword in 10 seconds</h2>
       </div>
+      
     <div class="search-section">
-      <div class="search-box">
+    <div class="search-box">
         <input
-          v-model="query"
-          placeholder="Find related companies! Try 'Youtube'..."
+            v-model="query"
+            placeholder="Find related companies! Try 'Youtube'..."
+            @keyup.enter="fetchData"
         />
         <button @click="fetchData">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="30"
-            height="30"
-            viewBox="0 0 30 "
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-paper-plane"
-          >
-            <path d="M10 14l11 -11"></path>
-            <path
-              d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"
-            ></path>
-          </svg>
+             <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="30"
+                height="30"
+                viewBox="0 0 30 "
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-paper-plane"
+             >
+                <path d="M10 14l11 -11"></path>
+                <path
+                   d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"
+                ></path>
+             </svg>
         </button>
       </div>
-    </div>
+</div>
 
     <div v-if="isLoading" class="skeleton">
       <div class="skeleton-header"></div>
