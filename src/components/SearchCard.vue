@@ -7,7 +7,7 @@ https://cdn.discordapp.com/attachments/1004972309100114000/1140608286874406962/Y
     <div class="logo-text">
         <h2>Discover most related company to your keyword in 10 seconds</h2>
       </div>
-      
+
     <div class="search-section">
     <div class="search-box">
         <input
@@ -36,6 +36,12 @@ https://cdn.discordapp.com/attachments/1004972309100114000/1140608286874406962/Y
         </button>
       </div>
 </div>
+      <div class="quick-fill-buttons">
+          <button @click="query='youtube'; fetchData()">youtube</button>
+          <button @click="query='Dota2 online game'; fetchData()">dota2</button>
+          <button @click="query='Topgolf Entertainment Group'; fetchData()">topgolf</button>
+          <button @click="query='ps5'; fetchData()">ps5</button>
+        </div>
 
     <div v-if="isLoading" class="skeleton">
       <div class="skeleton-header"></div>
@@ -73,47 +79,67 @@ export default {
   methods: {
     async fetchData() {
     this.isLoading = true;
-        const response = await axios.post('https://api.openai.com/v1/chat/completions', {
-    "model": "gpt-3.5-turbo",
-    "messages": [
-      {
-        "role": "system",
-        "content": "You are a helpful API that gets user input to find the most related public company and then answer as a symbol. The answer pattern is like API style by this template {'company_symbol':'AAPL', 'company_name':'Apple, Inc.', 'opinion':'Because ....'} p.s. it's okay if it's not directly related but try to answer as per the template, p.s.1 if you can't find an answer response {'company_symbol':'AAPL', 'company_name':'Apple, Inc.'} else answer {'company_symbol':'None', 'company_name':'None', 'opinion':'I cannot find related symbol'}."
-      },
-      {
-        "role": "user",
-        "content": `What is the company that is the most related to : '${this.query}'`
-      }
-    ]
-  }, {
-            headers: { 'Authorization': 'Bearer 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' }
-        }).finally(() => {
-            this.isLoading = false;
-        });
 
-        const content = response.data['choices'][0]['message']['content'];
-        let result = null;
-        try {
-            result = JSON.parse(content.replace(/'/g, '"'));
-        } catch {
-            console.log("Failed to parse the message content to JSON");
-            return;
-        }
+    let response;
+    let model_list=["gpt-3.5-turbo", "gpt-4"];
+    let result = null;
 
-        const logoUrl = `https://logo.clearbit.com/${result['company_symbol']}.com`;
-        result['logo_url'] = logoUrl.replace(" ", "");
+    for (var i=0; i < model_list.length; i++) {
+        response = await axios.post('https://api.openai.com/v1/chat/completions', {
+        "model": model_list[i],
+        "temperature": 1,
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a helpful API that gets user input to find the most related public company and then answer as a symbol. The answer pattern is like API style by this template {'company_symbol':'AAPL', 'company_name':'Apple, Inc.', 'opinion':'Because ....'} p.s. it's okay if it's not directly related but try to answer as per the template, p.s.1 if you can't find an answer response {'company_symbol':'AAPL', 'company_name':'Apple, Inc.'} else answer {'company_symbol':'None', 'company_name':'None', 'opinion':'I cannot find related symbol'}."
+          },
+          {
+            "role": "user",
+            "content": `What is the company that is the most related to : '${this.query}'`
+          }
+        ]
+      }, {
+                headers: { 'Authorization': 'Bearer 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' }
+            });
 
-        this.card = result;
+       const content = response.data['choices'][0]['message']['content'];
 
-        // Tracking the event
-        mixpanel.track("Search Result", {
-          "User Query": this.query,
-          "Company Symbol": this.card.company_symbol,
-          "Company Name": this.card.company_name,
-          "Company Opinion": this.card.opinion
-        });
+       try {
+           result = JSON.parse(content.replace(/'/g, '"'));
+       } catch {
+           console.log("Failed to parse the message content to JSON");
+           return;
+       }
 
+       // Check if company symbol is available
+       if (result.company_symbol && result.company_symbol != 'None') break;
     }
+
+    // If no useful response even after trying with all models provide a fail message.
+    if (!result.company_symbol || result.company_symbol == 'None') {
+       console.log("Failed to find a related company for the given query");
+       this.card = result;
+       this.card.company_symbol = " OOPS !"
+       this.card.company_name = " "
+       this.card.opinion = "I cannot find related symbol of : " + this.query
+    }
+
+    this.isLoading = false;
+
+    const logoUrl = `https://logo.clearbit.com/${result['company_symbol']}.com`;
+    result['logo_url'] = logoUrl.replace(" ", "");
+
+    this.card = result;
+
+    // Tracking the event
+    mixpanel.track("Search Result", {
+      "User Query": this.query,
+      "Company Symbol": this.card.company_symbol,
+      "Company Name": this.card.company_name,
+      "Company Opinion": this.card.opinion
+    });
+
+}
 },
 };
 </script>
@@ -208,6 +234,20 @@ export default {
   display: flex;
   justify-content: space-between;
   width: 100%;
+}
+
+.quick-fill-buttons {
+  margin-top: 5px;
+}
+
+.quick-fill-buttons button {
+  background-color: #9c9c9c;
+  color: white;
+  border-radius: 10px;
+  border: none;
+  margin-right: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
 }
 
 .nft-card {
