@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <SearchCard />
-    <AdBanner />
+   <AdBanner />
+  <SearchCard />  
   </div>
 </template>
 
