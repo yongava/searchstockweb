@@ -1,19 +1,24 @@
 <template>
   <div id="app">
-   <AdBanner />
-  <SearchCard />  
+  
+  <SearchCard /> 
+  <AdBanner /> 
+  <AdBannerInfoLinks />
   </div>
 </template>
 
 <script>
 import SearchCard from './components/SearchCard.vue'
 import AdBanner from './components/AdBanner.vue'
+import AdBannerInfoLinks from './components/AdBannerInfoLinks.vue'
+
 
 export default {
   name: 'App',
   components: {
     SearchCard,
-    AdBanner
+    AdBanner,
+    AdBannerInfoLinks
   },
   mounted() {
     const script = document.createElement('script')
