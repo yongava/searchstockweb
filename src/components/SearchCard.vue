@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <div class="logo-section">
+      <img src="https://media.discordapp.net/attachments/1004972309100114000/1140608286874406962/Yong_investment_financial_ratio_in_magnifier_stock_report_backg_ae769f51-ce01-4488-8aad-19cb82f8b815.png?width=1138&height=1138" id="company-logo"/>
+    </div>
     <div class="search-section">
       <div class="search-box">
   <input v-model="query" placeholder="Find related companies! Try 'Youtube'..." />
@@ -16,7 +19,8 @@
     <div class="skeleton-header"></div>
     <div class="skeleton-body">
       <div class="skeleton-line"></div>
-      <div class="skeleton-line"></div>
+    </div>
+    <div class="skeleton-body">
       <div class="skeleton-line"></div>
     </div>
   </div>
@@ -94,6 +98,19 @@ export default {
   }
 }
 
+.logo-section {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+#company-logo {
+  width: 150px;
+  height: auto;
+  border-radius: 100px;
+}
+
 .search-box {
   display: flex;
   justify-content: space-between;
@@ -102,11 +119,17 @@ export default {
   align-items: center;
   border-radius: 5px;
   padding: 10px;
+  min-height: 44px;
+  border: 1px solid #dfe1e5;
+  border-radius: 40px;
+  margin: 0 auto;
+  max-width: 584px;
 }
-
 
 .search-box input {
   border: none;
+  flex : 1;
+  display: flex;
   flex-grow: 1;
   margin-right: 10px;
 }
@@ -114,11 +137,16 @@ export default {
 .search-box button {
   border: none;
   background: transparent;
-  padding: 0;
+  padding-right: 8px;
+  padding-top: 5px;
+  align: center;
 }
 
 .search-box input:focus {
   output: none;
+  box-shadow: 0 0 0 30px rgba(0,123,255,0);
+  min-height: 44px;
+  line-height: 42px;
 }
 
 .search-section {
@@ -127,67 +155,52 @@ export default {
   width: 100%;
 }
 
-input {
-  height: 100%;
-  flex-grow: 1;
-  margin-right: 0.5rem;
-}
-
-button {
-  align-self: flex-end;
-  background: transparent;
-  border: none;
-}
-
 .nft-card {
   width: 100%;
   border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 1rem;
+  border-radius: 60px;
+  padding: 0.5rem;
   margin-top: 1rem;
   margin-left: 1px;
   margin-right: 1px;
   text-align: center;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    padding: 0.5rem;
-    margin-top: 0.5rem;
-  }
+  max-width: 584px;
 }
 
 
 /* Add skeleton styles */
 .skeleton {
   width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 1rem;
+  border: 0px solid #ddd;
+  border-radius: 100px;
+  padding: 0.5rem;
+  max-width: 584px;
   margin-top: 1rem;
   text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+  margin-left: 1px;
+  margin-right: 1px;
 
-  @media (max-width: 768px) {
-    width: 100%;
-    padding: 0.5rem;
-    margin-top: 0.5rem;
-  }
 }
 
 .skeleton-header, .skeleton-body {
   background: linear-gradient(-90deg, #f0f0f0 30%, #ddd 50%, #f0f0f0 70%);
   background-size: 400% 400%;
   animation: loading 1.2s ease-in-out infinite;
+  border-radius: 60px;
 }
 
 .skeleton-header {
   height: 40px;
   margin-bottom: 24px;
+  border-radius: 60px;
 }
 
 .skeleton-body .skeleton-line {
   height: 16px;
   margin-bottom: 16px;
-  border-radius: 4px;
+  border-radius: 60px;
 }
 
 @keyframes loading {

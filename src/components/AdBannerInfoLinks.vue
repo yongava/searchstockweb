@@ -29,7 +29,7 @@ export default {
 
 <style scoped>
 #add-container {
-  width: 100%; // Set this to the desired width
-  height: auto; // Set this to the desired height
+  width: 100%;
+  height: auto;
 }
 </style>
