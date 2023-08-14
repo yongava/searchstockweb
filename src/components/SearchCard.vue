@@ -5,14 +5,14 @@
 https://cdn.discordapp.com/attachments/1004972309100114000/1140608286874406962/Yong_investment_financial_ratio_in_magnifier_stock_report_backg_ae769f51-ce01-4488-8aad-19cb82f8b815.png" id="company-logo" />
     </div>
     <div class="logo-text">
-        <h2>Discover most related company to your keyword in 10 seconds</h2>
+        <h2>Discover related public company from your keyword in 10 seconds</h2>
       </div>
 
     <div class="search-section">
     <div class="search-box">
         <input
             v-model="query"
-            placeholder="Find related companies! Try 'Youtube'..."
+            placeholder="Try 'Youtube'..."
             @keyup.enter="fetchData"
         />
         <button @click="fetchData">
@@ -37,10 +37,12 @@ https://cdn.discordapp.com/attachments/1004972309100114000/1140608286874406962/Y
       </div>
 </div>
       <div class="quick-fill-buttons">
-          <button @click="query='youtube'; fetchData()">youtube</button>
-          <button @click="query='Dota2 online game'; fetchData()">dota2</button>
-          <button @click="query='Topgolf Entertainment Group'; fetchData()">topgolf</button>
-          <button @click="query='ps5'; fetchData()">ps5</button>
+          <button @click="query='Youtube'; fetchData()">Youtube</button>
+          <button @click="query='Dota2 online game'; fetchData()">Dota2</button>
+          <button @click="query='Yoga Pants'; fetchData()">Yoga Pants</button>
+          <button @click="query='Ergonomic Chair'; fetchData()">Ergonomic Chair</button>
+          <button @click="query='PlayStation 5'; fetchData()">PS5</button>
+          <button @click="query='Kisses Milk Chocolate'; fetchData()">Kisses</button>
         </div>
 
     <div v-if="isLoading" class="skeleton">
@@ -91,7 +93,7 @@ export default {
         "messages": [
           {
             "role": "system",
-            "content": "You are a helpful API that gets user input to find the most related public company and then answer as a symbol. The answer pattern is like API style by this template {'company_symbol':'AAPL', 'company_name':'Apple, Inc.', 'opinion':'Because ....'} p.s. it's okay if it's not directly related but try to answer as per the template, p.s.1 if you can't find an answer response {'company_symbol':'AAPL', 'company_name':'Apple, Inc.'} else answer {'company_symbol':'None', 'company_name':'None', 'opinion':'I cannot find related symbol'}."
+            "content": "You are a helpful API that gets user input to find the most related tradable stock and then answer as a stock symbol. The answer pattern is like API style by this template {'company_symbol':'AAPL', 'company_name':'Apple, Inc.', 'opinion':'Because ....'} p.s. it's okay if it's not directly related but try to answer as per the template, p.s.1 if you can't find an answer response {'company_symbol':'AAPL', 'company_name':'Apple, Inc.'} else answer {'company_symbol':'None', 'company_name':'None', 'opinion':'I cannot find related symbol'}."
           },
           {
             "role": "user",
@@ -106,8 +108,10 @@ export default {
 
        try {
            result = JSON.parse(content.replace(/'/g, '"'));
+           console.log(result)
        } catch {
            console.log("Failed to parse the message content to JSON");
+           this.card = {company_symbol: ' ', company_name: ' ', opinion: ' '};
            this.card.company_symbol = " OOPS !"
            this.card.company_name = " Something Went Wrong "
            this.card.opinion = "Can you try search again please 🥲"
@@ -120,7 +124,7 @@ export default {
     // If no useful response even after trying with all models provide a fail message.
     if (!result.company_symbol || result.company_symbol == 'None') {
        console.log("Failed to find a related company for the given query");
-       this.card = result;
+       this.card = {company_symbol: ' ', company_name: ' ', opinion: ' '};
        this.card.company_symbol = " OOPS !"
        this.card.company_name = " "
        this.card.opinion = "I cannot find related symbol of : " + this.query
@@ -248,6 +252,7 @@ export default {
   border-radius: 10px;
   border: none;
   margin-right: 5px;
+  margin-top: 5px;
   padding: 5px 10px;
   cursor: pointer;
 }
