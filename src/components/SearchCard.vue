@@ -28,6 +28,7 @@
       <p>{{ card.opinion }}</p>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -155,6 +156,7 @@ button {
   }
 }
 
+
 /* Add skeleton styles */
 .skeleton {
   width: 100%;
@@ -196,4 +198,6 @@ button {
     background-position: -100% 0;
   }
 }
+
+
 </style>
