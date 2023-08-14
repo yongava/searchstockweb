@@ -43,6 +43,7 @@ https://cdn.discordapp.com/attachments/1004972309100114000/1140608286874406962/Y
           <button @click="query='Ergonomic Chair'; fetchData()">Ergonomic Chair</button>
           <button @click="query='PlayStation 5'; fetchData()">PS5</button>
           <button @click="query='Kisses Milk Chocolate'; fetchData()">Kisses</button>
+          <button @click="query='Tylenol'; fetchData()">Tylenol</button>
         </div>
 
     <div v-if="isLoading" class="skeleton">
