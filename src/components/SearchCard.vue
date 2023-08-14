@@ -4,6 +4,9 @@
       <img src="
 https://cdn.discordapp.com/attachments/1004972309100114000/1140608286874406962/Yong_investment_financial_ratio_in_magnifier_stock_report_backg_ae769f51-ce01-4488-8aad-19cb82f8b815.png" id="company-logo" />
     </div>
+    <div class="logo-text">
+        <h2>Discover most related company to your keyword in 10 seconds</h2>
+      </div>
     <div class="search-section">
       <div class="search-box">
         <input
@@ -136,6 +139,20 @@ export default {
   width: 150px;
   height: auto;
   border-radius: 100px;
+}
+.logo-text {
+  margin-top: -20px;
+  text-align: center;
+}
+
+.logo-text h2 {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.logo-text p {
+  font-size: 15px;
+  color: #555
 }
 
 .search-box {
