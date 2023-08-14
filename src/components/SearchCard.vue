@@ -158,7 +158,8 @@ export default {
       "User Query": this.query,
       "Company Symbol": this.card.company_symbol,
       "Company Name": this.card.company_name,
-      "Company Opinion": this.card.opinion
+      "Company Opinion": this.card.opinion,
+      "Process Time": this.searchTime
     });
 
 }
