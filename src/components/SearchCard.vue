@@ -274,6 +274,10 @@ export default {
   cursor: pointer;
 }
 
+.quick-fill-buttons button:hover {
+  background-color: #7F4C3C;
+}
+
 .nft-card {
   width: 100%;
   border: 1px solid #ddd;
