@@ -1,26 +1,18 @@
 <template>
-  <div id="ad-container">
-    <amp-ad 
-      width="100vw" 
-      height="320"
-      type="adsense"
-      data-ad-client="ca-pub-3199261308247865"
-      data-ad-slot="7420360525"
-      data-auto-format="rspv"
-      data-full-width="">
-      <div overflow=""></div>
-    </amp-ad>
+  <div>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-3199261308247865"
+         data-ad-slot="7420360525"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'AdBanner',
+  mounted() {
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  }
 }
 </script>
-
-<style scoped>
-#ad-container {
-  /* Style your ad container if needed */
-}
-</style>
