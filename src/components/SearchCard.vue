@@ -13,7 +13,6 @@
             v-model="query"
             placeholder="Try 'Youtube'..."
             @keyup.enter="fetchData"
-            @blur="fetchData"
         />
         <button @click="fetchData">
              <svg
