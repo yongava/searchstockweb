@@ -114,7 +114,7 @@ export default {
           }
         ]
       }, {
-                headers: { 'Authorization': 'Bearer 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' }
+                headers: { 'Authorization': 'Bearer ${process.env.VUE_APP_OPENAI_API_KEY}' }
             });
 
        const content = response.data['choices'][0]['message']['content'];
