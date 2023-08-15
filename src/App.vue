@@ -1,19 +1,22 @@
 <template>
   <div id="app">
-  <SearchCard /> 
-  <AdBanner /> 
+    <SearchCard /> 
+    <AdBanner /> 
+    <PolicyLink />
   </div>
 </template>
 
 <script>
 import SearchCard from './components/SearchCard.vue'
 import AdBanner from './components/AdBanner.vue'
+import PolicyLink from './components/PolicyLink.vue'
 
 export default {
   name: 'App',
   components: {
     SearchCard,
-    AdBanner
+    AdBanner,
+    PolicyLink
   }
 }
 </script>
@@ -26,5 +29,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  position: relative;   /* Required for the PolicyLink to stick to the bottom */
+  min-height: 100vh;    /* Required for the PolicyLink to stick to the bottom */
 }
 </style>
