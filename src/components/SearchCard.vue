@@ -5,7 +5,7 @@
 https://cdn.discordapp.com/attachments/1004972309100114000/1140608286874406962/Yong_investment_financial_ratio_in_magnifier_stock_report_backg_ae769f51-ce01-4488-8aad-19cb82f8b815.png" id="company-logo" />
     </div>
     <div class="logo-text">
-        <h2>Discover related public company from your keyword in 10 seconds</h2>
+        <h2>Discover related stock symbols using your keywords in just a few seconds.</h2>
       </div>
 
     <div class="search-section">
