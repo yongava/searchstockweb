@@ -282,10 +282,11 @@ export default {
   margin-top: 5px;
   padding: 5px 10px;
   cursor: pointer;
+  min-width: 70px;
 }
 
 .quick-fill-buttons button:hover {
-  background-color: #7F4C3C;
+  background-color: #9F4C3C;
 }
 
 .nft-card {
