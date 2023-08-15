@@ -12,7 +12,7 @@
 <script>
 export default {
   mounted() {
-    (adsbygoogle = window.adsbygoogle || []).push({});
+    (window.adsbygoogle = window.adsbygoogle || []).push({});
   }
 }
 </script>
