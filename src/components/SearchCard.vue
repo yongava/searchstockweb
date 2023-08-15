@@ -63,7 +63,7 @@
     </div>
 
     <div v-if="searchTime" class="search-time">
-    <p>Completed in {{ searchTime }} seconds </p>
+    <p>Completed in {{ searchTime }} seconds</p>
     </div>
 
     <div v-if="searchTime" class="disclaimer">
@@ -85,7 +85,8 @@ export default {
       query: '',
       card: null,
       isLoading: false,
-      searchTime: null
+      searchTime: null,
+      searchCost: null
     };
   },
   methods: {
@@ -106,7 +107,7 @@ export default {
         "messages": [
           {
             "role": "system",
-            "content": "You are a helpful API that gets user input to find the most related tradable stock and then answer as a stock symbol. The answer pattern is like API style by this template {'company_symbol':'AAPL', 'company_name':'Apple, Inc.', 'opinion':'Because ....'} p.s. it's okay if it's not directly related but try to answer as per the template, p.s.1 if you can't find an answer response {'company_symbol':'AAPL', 'company_name':'Apple, Inc.'} else answer {'company_symbol':'None', 'company_name':'None', 'opinion':'I cannot find related symbol'}."
+            "content": "You are an API that analyses user input to find tradable businesses most related to cultural, artistic or fictional entities like characters, books or films. You are expected to answer with a stock symbol of the corresponding company. For example, if user asks about 'Harry Potter', you could respond with {'company_symbol': 'T', 'company_name': 'AT&T Inc.', 'opinion': 'Because AT&T owns Warner Bros. which produced the Harry Potter series.'}. If you can't find a related company, respond with {'company_symbol': ' ', 'company_name': ' ', 'opinion': 'Can not find related symbol'}."
           },
           {
             "role": "user",
@@ -120,7 +121,7 @@ export default {
        const content = response.data['choices'][0]['message']['content'];
 
        try {
-           result = JSON.parse(content.replace(/'/g, '"').replace(/Because/gi, '').replace(/None/gi, ''));
+           result = JSON.parse(content.replace(/'/g, '"').replace(/Because/gi, ''));
        } catch {
            //console.log("Failed to parse the message content to JSON");
            this.card = {company_symbol: ' ', company_name: ' ', opinion: ' '};
@@ -134,19 +135,25 @@ export default {
     }
 
     // If no useful response even after trying with all models provide a fail message.
-    if (!result.company_symbol || result.company_symbol == 'None') {
-       //console.log("Failed to find a related company for the given query");
-       this.card = {company_symbol: ' ', company_name: ' ', opinion: ' '};
-       this.card.company_symbol = " OOPS !"
-       this.card.company_name = " "
-       this.card.opinion = "I cannot find related symbol of : " + this.query
-    }
+    if (result && result.company_symbol && result.company_symbol != 'None') {
+      const logoUrl = `https://logo.clearbit.com/${result['company_symbol']}.com`;
+      result['logo_url'] = logoUrl.replace(" ", "");
+      this.card = result;
+      } else {
+          this.card = {company_symbol: 'OOPS!', company_name: ' ', opinion: `I cannot find related symbol of : ${this.query}`};
+      }
 
     this.isLoading = false;
 
     let endTime = new Date().getTime();
     this.searchTime = ((endTime - startTime) / 1000).toFixed(2); 
 
+    const total_tokens = response.data['usage']['total_tokens'];
+      
+    // Calculate the cost
+    const cost = (total_tokens / 1000) * 0.03;
+    
+    this.searchCost = cost
 
     const logoUrl = `https://logo.clearbit.com/${result['company_symbol']}.com`;
     result['logo_url'] = logoUrl.replace(" ", "");
