@@ -120,7 +120,7 @@ export default {
        const content = response.data['choices'][0]['message']['content'];
 
        try {
-           result = JSON.parse(content.replace(/'/g, '"').replace(/Because/gi, ''));
+           result = JSON.parse(content.replace(/'/g, '"').replace(/Because/gi, '').replace(/None/gi, ''));
        } catch {
            //console.log("Failed to parse the message content to JSON");
            this.card = {company_symbol: ' ', company_name: ' ', opinion: ' '};
