@@ -153,6 +153,10 @@ export default {
 
     this.card = result;
 
+    this.$nextTick(() => {
+        document.querySelector(".search-section").scrollIntoView({ behavior: 'smooth' });
+      });
+
     // Tracking the event
     mixpanel.track("Search Result", {
       "User Query": this.query,
