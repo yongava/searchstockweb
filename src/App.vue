@@ -16,7 +16,6 @@ export default {
     AdBanner
   }
 }
-
 </script>
 
 <style>
