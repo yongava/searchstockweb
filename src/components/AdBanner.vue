@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'AdComponent',
+  name: 'AdBanner',
   mounted() {
     (window.adsbygoogle = window.adsbygoogle || []).push({});
   },

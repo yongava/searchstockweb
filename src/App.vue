@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-  
   <SearchCard /> 
   <AdBanner /> 
   </div>
