@@ -14,6 +14,7 @@ https://cdn.discordapp.com/attachments/1004972309100114000/1140608286874406962/Y
             v-model="query"
             placeholder="Try 'Youtube'..."
             @keyup.enter="fetchData"
+            @blur="fetchData"
         />
         <button @click="fetchData">
              <svg
