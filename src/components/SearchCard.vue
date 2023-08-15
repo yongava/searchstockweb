@@ -113,7 +113,7 @@ export default {
           }
         ]
       }, {
-                headers: { 'Authorization': 'Bearer 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' }
+                headers: { 'Authorization': 'Bearer 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' }
             });
 
        const content = response.data['choices'][0]['message']['content'];
