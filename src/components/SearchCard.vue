@@ -95,9 +95,13 @@ export default {
     this.isLoading = true;
     let startTime = new Date().getTime(); 
 
+    let openaikey = process.env.VUE_APP_OPENAI_API_KEY
+    console.log(openaikey);
+
     let response;
     let model_list=["gpt-3.5-turbo", "gpt-4"];
     let result = null;
+
 
     for (var i=0; i < model_list.length; i++) {
         response = await axios.post('https://api.openai.com/v1/chat/completions', {
@@ -114,7 +118,7 @@ export default {
           }
         ]
       }, {
-                headers: { 'Authorization': 'Bearer ${process.env.VUE_APP_OPENAI_API_KEY}' }
+          headers: { 'Authorization': `Bearer ${openaikey}` }
             });
 
        const content = response.data['choices'][0]['message']['content'];
@@ -233,7 +237,7 @@ export default {
   flex-grow: 1;
   margin-right: 10px;
   font-size: 16px;
-  
+
   @media screen and (max-width: 768px) {
     font-size: 16px;
   }
