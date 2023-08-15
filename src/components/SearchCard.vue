@@ -102,7 +102,7 @@ export default {
     for (var i=0; i < model_list.length; i++) {
         response = await axios.post('https://api.openai.com/v1/chat/completions', {
         "model": model_list[i],
-        "temperature": 1,
+        "temperature": 0.1,
         "messages": [
           {
             "role": "system",
