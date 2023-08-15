@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="logo-section">
-      <img src="mascotsmall.png" alt="Discover related stock from your keyword in 10 seconds" id="company-logo" />
+    <img data-v-f149e288="" src="mascotsmall.png" alt="Discover related stock from your keyword in 10 seconds" id="company-logo" width="150" height="150">
     </div>
     <div class="logo-text">
         <h2>Discover related stock symbols using your keywords in just a few seconds.</h2>
@@ -19,7 +19,7 @@
                 xmlns="http://www.w3.org/2000/svg"
                 width="30"
                 height="30"
-                viewBox="0 0 30 "
+                viewBox="0 0 30 30"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
@@ -274,7 +274,7 @@ export default {
 }
 
 .quick-fill-buttons button {
-  background-color: #9c9c9c;
+  background-color: #7F4C2D;
   color: white;
   border-radius: 10px;
   border: none;
