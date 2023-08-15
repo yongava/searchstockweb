@@ -119,7 +119,7 @@ export default {
        const content = response.data['choices'][0]['message']['content'];
 
        try {
-           result = JSON.parse(content.replace(/'/g, '"'));
+           result = JSON.parse(content.replace(/'/g, '"').replace(/Because/gi, ''));
            console.log(result)
        } catch {
            console.log("Failed to parse the message content to JSON");
