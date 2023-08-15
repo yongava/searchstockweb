@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="logo-section">
-      <img src="mascot.png" alt="Discover related stock from your keyword in 10 seconds" id="company-logo" />
+      <img src="mascotsmall.png" alt="Discover related stock from your keyword in 10 seconds" id="company-logo" />
     </div>
     <div class="logo-text">
         <h2>Discover related stock symbols using your keywords in just a few seconds.</h2>
