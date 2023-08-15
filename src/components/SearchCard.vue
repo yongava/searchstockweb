@@ -96,8 +96,6 @@ export default {
     let startTime = new Date().getTime(); 
 
     let openaikey = process.env.VUE_APP_OPENAI_API_KEY
-    console.log(openaikey);
-
     let response;
     let model_list=["gpt-3.5-turbo", "gpt-4"];
     let result = null;
@@ -125,9 +123,8 @@ export default {
 
        try {
            result = JSON.parse(content.replace(/'/g, '"').replace(/Because/gi, ''));
-           console.log(result)
        } catch {
-           console.log("Failed to parse the message content to JSON");
+           //console.log("Failed to parse the message content to JSON");
            this.card = {company_symbol: ' ', company_name: ' ', opinion: ' '};
            this.card.company_symbol = " OOPS !"
            this.card.company_name = " Something Went Wrong "
@@ -140,7 +137,7 @@ export default {
 
     // If no useful response even after trying with all models provide a fail message.
     if (!result.company_symbol || result.company_symbol == 'None') {
-       console.log("Failed to find a related company for the given query");
+       //console.log("Failed to find a related company for the given query");
        this.card = {company_symbol: ' ', company_name: ' ', opinion: ' '};
        this.card.company_symbol = " OOPS !"
        this.card.company_name = " "
