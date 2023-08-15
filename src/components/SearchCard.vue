@@ -41,7 +41,7 @@
           <button @click="query='Yoga Pants'; fetchData()">Yoga Pants</button>
           <button @click="query='Ergonomic Chair'; fetchData()">Ergonomic Chair</button>
           <button @click="query='PlayStation 5'; fetchData()">PS5</button>
-          <button @click="query='Kisses Milk Chocolate'; fetchData()">Kisses</button>
+          <button @click="query='ev car'; fetchData()">EV Car</button>
           <button @click="query='Tylenol'; fetchData()">Tylenol</button>
         </div>
 
