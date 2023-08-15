@@ -95,7 +95,7 @@ export default {
 
     let openaikey = process.env.VUE_APP_OPENAI_API_KEY
     let response;
-    let model_list=["gpt-3.5-turbo", "gpt-4"];
+    let model_list=["gpt-4"];
     let result = null;
 
 
