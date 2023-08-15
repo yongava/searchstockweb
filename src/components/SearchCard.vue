@@ -14,7 +14,7 @@
             placeholder="Try 'Youtube'..."
             @keyup.enter="fetchData"
         />
-        <button @click="fetchData">
+        <button @click="fetchData" aria-label="Send data">
              <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="30"
