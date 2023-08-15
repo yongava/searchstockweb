@@ -232,6 +232,11 @@ export default {
   display: flex;
   flex-grow: 1;
   margin-right: 10px;
+  font-size: 16px;
+  
+  @media screen and (max-width: 768px) {
+    font-size: 16px;
+  }
 }
 
 .search-box button {
@@ -256,6 +261,7 @@ export default {
   box-shadow: 0 0 0 30px rgba(0, 123, 255, 0);
   min-height: 44px;
   line-height: 42px;
+  font-size: 16px;
 }
 
 .search-section {
