@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div style="position:fixed; bottom:0px; width:100%;">
     <ins class="adsbygoogle"
-         style="display:block"
+         style="display:inline-block"
          data-ad-client="ca-pub-3199261308247865"
          data-ad-slot="7420360525"
          data-ad-format="auto"
@@ -10,9 +10,9 @@
 </template>
 
 <script>
-export default {
-  mounted() {
-    (window.adsbygoogle = window.adsbygoogle || []).push({});
-  }
-}
+    export default {
+        mounted() {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+        }
+    }
 </script>
