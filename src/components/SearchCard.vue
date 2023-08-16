@@ -36,13 +36,13 @@
       </div>
 </div>
       <div class="quick-fill-buttons">
+          <button @click="query='AI Stock'; fetchData()">AI Stock</button>
           <button @click="query='Youtube'; fetchData()">Youtube</button>
           <button @click="query='Dota2 online game'; fetchData()">Dota2</button>
           <button @click="query='Yoga Pants'; fetchData()">Yoga Pants</button>
           <button @click="query='Ergonomic Chair'; fetchData()">Ergonomic Chair</button>
           <button @click="query='PlayStation 5'; fetchData()">PS5</button>
-          <button @click="query='ev car'; fetchData()">EV Car</button>
-          <button @click="query='Tylenol'; fetchData()">Tylenol</button>
+          <button @click="query='EV car'; fetchData()">EV Car</button>
         </div>
 
     <div v-if="isLoading" class="skeleton">
