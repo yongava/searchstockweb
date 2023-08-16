@@ -18,7 +18,7 @@
       <div class="search-box">
         <input
           v-model="query"
-          placeholder="Try 'Youtube'..."
+          placeholder="Try 'AI Stock'..."
           @keyup.enter="fetchData"
         />
         <button @click="fetchData" aria-label="Send data">
@@ -289,10 +289,11 @@ unmounted() {
   display: flex;
   flex-grow: 1;
   margin-right: 10px;
-  font-size: 16px;
+  margin-left: 1rem;
+  font-size: 25px;
 
   @media screen and (max-width: 768px) {
-    font-size: 16px;
+    font-size: 25px;
   }
 }
 
@@ -307,6 +308,7 @@ unmounted() {
   width: 50px; /* updated button size */
   height: 50px; /* updated button size */
 
+
   svg {
     width: 30px; /* adjust SVG size */
     height: 30px; /* adjust SVG size */
@@ -318,7 +320,7 @@ unmounted() {
   box-shadow: 0 0 0 30px rgba(0, 123, 255, 0);
   min-height: 44px;
   line-height: 42px;
-  font-size: 30px;
+  font-size: 25px;
   margin-left: 1rem;
 }
 
