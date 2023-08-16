@@ -1,55 +1,58 @@
 <template>
   <div class="container">
     <div class="logo-section">
-    <img data-v-f149e288="" src="mascotsmall.png" alt="Discover related stock using your keywords in just a few seconds." id="company-logo" width="150" height="150">
+      <img
+        data-v-f149e288=""
+        src="mascotsmall.png"
+        alt="Discover related stock using your keywords in just a few seconds."
+        id="company-logo"
+        width="150"
+        height="150"
+      />
     </div>
     <div class="logo-text">
-        <h2>Discover related stock using your keywords in just a few seconds.</h2>
-      </div>
+      <h2>Discover related stock using your keywords in just a few seconds.</h2>
+    </div>
 
     <div class="search-section">
-    <div class="search-box">
+      <div class="search-box">
         <input
-            v-model="query"
-            placeholder="Try 'Youtube'..."
-            @keyup.enter="fetchData"
+          v-model="query"
+          placeholder="Try 'Youtube'..."
+          @keyup.enter="fetchData"
         />
         <button @click="fetchData" aria-label="Send data">
-             <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="30"
-                height="30"
-                viewBox="0 0 30 30"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="feather feather-paper-plane"
-             >
-                <path d="M10 14l11 -11"></path>
-                <path
-                   d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"
-                ></path>
-             </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="30"
+            height="30"
+            viewBox="0 0 30 30"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-paper-plane"
+          >
+            <path d="M10 14l11 -11"></path>
+            <path
+              d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"
+            ></path>
+          </svg>
         </button>
       </div>
-</div>
-      <div class="quick-fill-buttons">
-          <button @click="query='AI Stock'; fetchData()">AI Stock</button>
-          <button @click="query='Youtube'; fetchData()">Youtube</button>
-          <button @click="query='Dota2 online game'; fetchData()">Dota2</button>
-          <button @click="query='Yoga Pants'; fetchData()">Yoga Pants</button>
-          <button @click="query='Ergonomic Chair'; fetchData()">Ergonomic Chair</button>
-          <button @click="query='PlayStation 5'; fetchData()">PS5</button>
-          <button @click="query='EV car'; fetchData()">EV Car</button>
-        </div>
-
-    <!-- 
-    <div v-if="isLoading" class="lottie-animation">
-      <div ref="lottie" style="width: 300px; height: 300px;"></div>
     </div>
-    -->
+    <div class="quick-fill-buttons">
+      <button @click="query='AI Stock'; fetchData()">AI Stock</button>
+      <button @click="query='Youtube'; fetchData()">Youtube</button>
+      <button @click="query='Dota2 online game'; fetchData()">Dota2</button>
+      <button @click="query='Yoga Pants'; fetchData()">Yoga Pants</button>
+      <button @click="query='Ergonomic Chair'; fetchData()">
+        Ergonomic Chair
+      </button>
+      <button @click="query='PlayStation 5'; fetchData()">PS5</button>
+      <button @click="query='EV car'; fetchData()">EV Car</button>
+    </div>
 
     <div v-if="isLoading" class="skeleton">
       <div class="skeleton-body">
@@ -76,7 +79,6 @@
         <div class="skeleton-line"></div>
         <div class="skeleton-line"></div>
       </div>
-
     </div>
 
     <!-- NFT Card, visible when isLoading is false -->
@@ -87,10 +89,16 @@
     </div>
 
     <div v-if="!isLoading && searchTime" class="disclaimer">
-    <p class="search-time">Search Completed in {{ searchTime }} seconds</p>
-      <p>Please note that the symbol may not up to date. Beacuse this model generally does not possess knowledge of events that have occurred after the vast majority of its training data was collected (i.e., before September 2021), therefore it may not include recent developments or changes in company strategy, market conditions, or other factors that could affect the relevance of these suggested matches.</p>
+      <p class="search-time">Search Completed in {{ searchTime }} seconds</p>
+      <p>
+        Please note that the symbol may not up to date. Beacuse this model
+        generally does not possess knowledge of events that have occurred after
+        the vast majority of its training data was collected (i.e., before
+        September 2021), therefore it may not include recent developments or
+        changes in company strategy, market conditions, or other factors that
+        could affect the relevance of these suggested matches.
+      </p>
     </div>
-
   </div>
 </template>
 
@@ -128,7 +136,7 @@ export default {
     methods: {
     async fetchData() {
         this.isLoading = true;
-        let startTime = new Date().getTime(); 
+        let startTime = new Date().getTime();
 
         let openaikey = process.env.VUE_APP_OPENAI_API_KEY
         let response;
@@ -189,12 +197,12 @@ export default {
         if (lottie.isLoaded) lottie.stop();
 
         let endTime = new Date().getTime();
-        this.searchTime = ((endTime - startTime) / 1000).toFixed(2); 
+        this.searchTime = ((endTime - startTime) / 1000).toFixed(2);
 
         const total_tokens = response.data['usage']['total_tokens'];
-        
+
         const cost = (total_tokens / 1000) * 0.03;
-        
+
         this.searchCost = cost
 
         this.card = result;
@@ -257,7 +265,7 @@ unmounted() {
 
 .logo-text p {
   font-size: 15px;
-  color: #555
+  color: #555;
 }
 
 .search-box {
@@ -336,7 +344,7 @@ unmounted() {
 }
 
 .quick-fill-buttons button:hover {
-  background-color: #9F4C3C;
+  background-color: #9f4c3c;
 }
 
 .nft-card {
@@ -358,9 +366,9 @@ unmounted() {
 
 .disclaimer {
   width: 100%;
-  margin-top: -.5rem;
-  padding: .5rem;
-  padding-top: -.5rem;
+  margin-top: -0.5rem;
+  padding: 0.5rem;
+  padding-top: -0.5rem;
   text-align: center;
   color: #555;
   font-size: 12px;
@@ -413,5 +421,4 @@ unmounted() {
     background-position: -100% 0;
   }
 }
-
 </style>
