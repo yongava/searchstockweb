@@ -45,37 +45,49 @@
           <button @click="query='EV car'; fetchData()">EV Car</button>
         </div>
 
-      <div v-if="isLoading" class="skeleton">
-        <div class="skeleton-body">
-          <div class="skeleton-line"  style="height: 128px; max-width: 128px"></div>
-        </div>
-        <div class="skeleton-body">
-          <div class="skeleton-line"></div>
-        </div>
-        <div class="skeleton-body">
-          <div class="skeleton-line"></div>
-        </div>
-        <div class="skeleton-body">
-          <div class="skeleton-line"></div>
-        </div>
-        <div class="skeleton-body">
-          <div class="skeleton-line"></div>
-        </div>
-      </div>
-      
-      <!-- NFT Card, visible when isLoading is false -->
-      <div v-if="!isLoading && card" class="nft-card">
-        <img :src="card.logo_url" alt="Card symbol image" />
-        <h3>{{ card.company_name }} ({{ card.company_symbol }})</h3>
-        <p>{{ card.opinion }}</p>
+    <!-- 
+    <div v-if="isLoading" class="lottie-animation">
+      <div ref="lottie" style="width: 300px; height: 300px;"></div>
+    </div>
+    -->
+
+    <div v-if="isLoading" class="skeleton">
+      <div class="skeleton-body">
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
       </div>
 
+      <div class="skeleton-body">
+        <div class="skeleton-line"></div>
+      </div>
 
-    <div v-if="!isLoading && searchTime" class="search-time">
-    <p>Completed in {{ searchTime }} seconds</p>
+      <div class="skeleton-body">
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+      </div>
+
+      <div class="skeleton-body">
+        <div class="skeleton-line"></div>
+      </div>
+
+      <div class="skeleton-body">
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+      </div>
+
+    </div>
+
+    <!-- NFT Card, visible when isLoading is false -->
+    <div v-if="!isLoading && card" class="nft-card">
+      <img :src="card.logo_url" alt="Card symbol image" />
+      <h3>{{ card.company_name }} ({{ card.company_symbol }})</h3>
+      <p>{{ card.opinion }}</p>
     </div>
 
     <div v-if="!isLoading && searchTime" class="disclaimer">
+    <p class="search-time">Search Completed in {{ searchTime }} seconds</p>
       <p>Please note that the symbol may not up to date. Beacuse this model generally does not possess knowledge of events that have occurred after the vast majority of its training data was collected (i.e., before September 2021), therefore it may not include recent developments or changes in company strategy, market conditions, or other factors that could affect the relevance of these suggested matches.</p>
     </div>
 
@@ -85,6 +97,7 @@
 <script>
 import axios from 'axios';
 import mixpanel from 'mixpanel-browser';
+import lottie from 'lottie-web';
 
 mixpanel.init("e0e5a1748e7a2c12d17361e1c381a326");
 
@@ -100,6 +113,14 @@ export default {
     };
     },
     async created() {
+    // Start the lottie animation
+    lottie.loadAnimation({
+      container: this.$refs.lottie,
+      renderer: "svg",
+      loop: true,
+      autoplay: true,
+      path: "lottie_loading.json",
+    });
     const response = await fetch('/company.json');
     const data = await response.json();
     this.companies = data.data.stocks;
@@ -164,6 +185,8 @@ export default {
         }
 
         this.isLoading = false;
+        // If animation still loaded, stop it
+        if (lottie.isLoaded) lottie.stop();
 
         let endTime = new Date().getTime();
         this.searchTime = ((endTime - startTime) / 1000).toFixed(2); 
@@ -191,6 +214,10 @@ export default {
 
     }
 },
+unmounted() {
+    // Ensure the animation is stopped when the component is destroyed
+    lottie.destroy();
+  },
 };
 </script>
 
@@ -331,8 +358,9 @@ export default {
 
 .disclaimer {
   width: 100%;
-  margin-top: 1rem;
+  margin-top: -.5rem;
   padding: .5rem;
+  padding-top: -.5rem;
   text-align: center;
   color: #555;
   font-size: 12px;
