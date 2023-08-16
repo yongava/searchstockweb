@@ -366,9 +366,8 @@ unmounted() {
 
 .disclaimer {
   width: 100%;
-  margin-top: -0.5rem;
+  margin-top: -1.5rem;
   padding: 0.5rem;
-  padding-top: -0.5rem;
   text-align: center;
   color: #555;
   font-size: 12px;
