@@ -20,6 +20,7 @@ export default {
   display: flex;
   justify-content: space-between;
   padding: 5px;
+  padding-top: 8px;
   background-color: #f8f9fa;
   align-items: center;
 }
