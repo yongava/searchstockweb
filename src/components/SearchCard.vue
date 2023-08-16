@@ -318,7 +318,8 @@ unmounted() {
   box-shadow: 0 0 0 30px rgba(0, 123, 255, 0);
   min-height: 44px;
   line-height: 42px;
-  font-size: 16px;
+  font-size: 30px;
+  margin-left: 1rem;
 }
 
 .search-section {
