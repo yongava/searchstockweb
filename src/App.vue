@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <SearchCard /> 
-    <AdBanner /> 
+    <SearchCard class="content" />
+    <AdBanner class="content" />
     <PolicyLink />
   </div>
 </template>
@@ -24,12 +24,21 @@ export default {
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
-  position: relative;   /* Required for the PolicyLink to stick to the bottom */
-  min-height: 100vh;    /* Required for the PolicyLink to stick to the bottom */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;  /* UPDATED */
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1 0 auto;  /* ADDED */
+}
+
+@media (max-width: 768px) {
+  #app {
+    max-width: 100%;
+  }
 }
 </style>

@@ -3,7 +3,7 @@
     <div class="logo-section">
       <img
         data-v-f149e288=""
-        src="mascotsmall.png"
+        src="mascot.png"
         alt="Discover related stock using your keywords in just a few seconds."
         id="company-logo"
         width="150"
@@ -236,7 +236,12 @@ export default {
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 #company-logo {
@@ -244,14 +249,19 @@ export default {
   height: auto;
   border-radius: 100px;
 }
+
 .logo-text {
-  margin-top: -20px;
+  margin-top: -10px;
   text-align: center;
+
 }
 
 .logo-text h2 {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
+  @media (max-width: 768px) {
+    font-size: 11px;
+  }
 }
 
 .logo-text p {
@@ -272,6 +282,10 @@ export default {
   border-radius: 40px;
   margin: 0 auto;
   max-width: 584px;
+
+  @media (max-width: 768px) {
+    width: 95%;
+  }
 }
 
 .search-box input {
@@ -285,6 +299,22 @@ export default {
 
   @media screen and (max-width: 768px) {
     font-size: 25px;
+    min-width: 50%;
+
+  }
+}
+
+.search-box input:focus {
+  output: none;
+  box-shadow: 0 0 0 30px rgba(0, 123, 255, 0);
+  min-height: 44px;
+  line-height: 42px;
+  font-size: 25px;
+  margin-left: 1rem;
+
+  @media screen and (max-width: 768px) {
+    font-size: 25px;
+    min-width: 25px;
   }
 }
 
@@ -305,16 +335,6 @@ export default {
     height: 30px; /* adjust SVG size */
   }
 }
-
-.search-box input:focus {
-  output: none;
-  box-shadow: 0 0 0 30px rgba(0, 123, 255, 0);
-  min-height: 44px;
-  line-height: 42px;
-  font-size: 25px;
-  margin-left: 1rem;
-}
-
 .search-section {
   display: flex;
   justify-content: space-between;
@@ -322,6 +342,9 @@ export default {
 }
 
 .quick-fill-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   margin-top: 5px;
 }
 
@@ -330,15 +353,31 @@ export default {
   color: white;
   border-radius: 10px;
   border: none;
-  margin-right: 5px;
-  margin-top: 5px;
+  margin: 5px;
   padding: 5px 10px;
   cursor: pointer;
   min-width: 70px;
+
+  @media (max-width: 768px) {
+    min-width: auto;
+  }
 }
 
 .quick-fill-buttons button:hover {
   background-color: #9f4c3c;
+}
+
+.nft-card, .disclaimer, .skeleton {
+  maxWidth: 95%; //update this
+}
+
+.search-time {
+  font-size: 14px; //update this
+  margin-top: 1rem;
+}
+
+.disclaimer p{
+  font-size: 10px; //update this
 }
 
 .nft-card {
@@ -349,6 +388,7 @@ export default {
   margin: 1rem auto;
   text-align: center;
   max-width: 584px;
+  margin-bottom: 2rem;
 }
 
 .search-time {
@@ -369,6 +409,7 @@ export default {
   border-radius: 10px;
   box-sizing: border-box;
   max-width: 584px;
+  margin-bottom: 2rem
 }
 
 /* Skeleton styles */

@@ -13,15 +13,14 @@ export default {
 
 <style scoped>
 .footer {
-  position: absolute;
-  bottom: 0;
+  flex-shrink: 0;  /* ADDED */
   width: 100%;
   height: 15px;
   display: flex;
   justify-content: space-between;
   padding: 5px;
   padding-top: 8px;
-  background-color: #f8f9fa;
+  background-color: #fffff;
   align-items: center;
 }
 
