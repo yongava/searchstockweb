@@ -10,18 +10,10 @@
         height="150"
       />
     </div>
-    <div class="logo-text">
-      <h2>Discover related stock using your keywords in just a few seconds.</h2>
-    </div>
-
     <div class="search-section">
       <div class="search-box">
-        <input
-          v-model="query"
-          placeholder="Try 'AI Stock'..."
-          @keyup.enter="fetchData"
-        />
         <button @click="fetchData" aria-label="Send data">
+        <!--
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="25"
@@ -39,7 +31,15 @@
               d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"
             ></path>
           </svg>
+          -->
+          <svg aria-hidden="true" width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.4167 0C15.7555 0 20.0833 4.32792 20.0833 9.66667C20.0833 11.9759 19.2736 14.0959 17.9227 15.7584L24.4571 22.2929C24.8476 22.6835 24.8476 23.3165 24.4571 23.7071C24.1021 24.0621 23.5465 24.0944 23.1551 23.8039L23.0429 23.7071L16.5084 17.1727C14.8459 18.5236 12.7259 19.3333 10.4167 19.3333C5.07792 19.3333 0.75 15.0055 0.75 9.66667C0.75 4.32792 5.07792 0 10.4167 0ZM10.4167 2C6.18248 2 2.75 5.43248 2.75 9.66667C2.75 13.9008 6.18248 17.3333 10.4167 17.3333C14.6508 17.3333 18.0833 13.9008 18.0833 9.66667C18.0833 5.43248 14.6508 2 10.4167 2Z" fill="#767676"></path></svg>
         </button>
+        <input
+          ref="searchInput"
+          v-model="query"
+          placeholder='Try search "AI Stock" '
+          @keyup.enter="fetchData"
+        />
       </div>
     </div>
     <div class="quick-fill-buttons">
@@ -99,6 +99,7 @@
         could affect the relevance of these suggested matches.
       </p>
     </div>
+
   </div>
 </template>
 
@@ -217,6 +218,9 @@ export default {
 
     }
 },
+      mounted() {
+        this.$refs.searchInput.focus();
+      },
 };
 </script>
 
@@ -288,6 +292,11 @@ export default {
   }
 }
 
+input::placeholder {
+  font-size: 2.5vh;
+  /* You can provide your desired font size */
+}
+
 .search-box input {
   border: none;
   flex: 1;
@@ -311,7 +320,8 @@ export default {
   line-height: 42px;
   font-size: 25px;
   margin-left: 1rem;
-
+  outline: none;
+  box-shadow: 0 0 5px rgba(81, 203, 238, 0);
   @media screen and (max-width: 768px) {
     font-size: 25px;
     min-width: 25px;
