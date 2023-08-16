@@ -108,6 +108,10 @@ import mixpanel from 'mixpanel-browser';
 
 mixpanel.init("e0e5a1748e7a2c12d17361e1c381a326", { debug: true, track_pageview: true, persistence: 'localStorage' });
 
+// Track an event. It can be anything, but in this example, we're tracking a Sign Up event.
+mixpanel.track('Open Page', {
+  'PageView': 'SearchPage'
+})
 
 export default {
     data() {
