@@ -24,11 +24,11 @@
         <button @click="fetchData" aria-label="Send data">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="30"
-            height="30"
-            viewBox="0 0 30 30"
+            width="25"
+            height="25"
+            viewBox="0 0 25 25"
             fill="none"
-            stroke="currentColor"
+            stroke="#555555"
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -257,10 +257,10 @@ export default {
 }
 
 .logo-text h2 {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: bold;
-  @media (max-width: 768px) {
-    font-size: 11px;
+  @media (max-width: 655px) {
+    font-size: 3vw;
   }
 }
 
@@ -356,7 +356,7 @@ export default {
   margin: 5px;
   padding: 5px 10px;
   cursor: pointer;
-  min-width: 70px;
+  min-width: auto;
 
   @media (max-width: 768px) {
     min-width: auto;
