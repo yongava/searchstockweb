@@ -367,10 +367,6 @@ export default {
   background-color: #9f4c3c;
 }
 
-.nft-card, .disclaimer, .skeleton {
-  maxWidth: 95%; //update this
-}
-
 .search-time {
   font-size: 14px; //update this
   margin-top: 1rem;
@@ -381,7 +377,6 @@ export default {
 }
 
 .nft-card {
-  width: 100%;
   border: 0px solid #ddd;
   border-radius: 60px;
   padding: 1rem;
