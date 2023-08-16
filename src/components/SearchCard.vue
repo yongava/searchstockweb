@@ -45,42 +45,37 @@
           <button @click="query='EV car'; fetchData()">EV Car</button>
         </div>
 
-    <div v-if="isLoading" class="skeleton">
-    <div class="skeleton-header"></div>
-
-      <div class="skeleton-body">
-        <div class="skeleton-line"></div>
+      <div v-if="isLoading" class="skeleton">
+        <div class="skeleton-body">
+          <div class="skeleton-line"  style="height: 128px; max-width: 128px"></div>
+        </div>
+        <div class="skeleton-body">
+          <div class="skeleton-line"></div>
+        </div>
+        <div class="skeleton-body">
+          <div class="skeleton-line"></div>
+        </div>
+        <div class="skeleton-body">
+          <div class="skeleton-line"></div>
+        </div>
+        <div class="skeleton-body">
+          <div class="skeleton-line"></div>
+        </div>
+      </div>
+      
+      <!-- NFT Card, visible when isLoading is false -->
+      <div v-if="!isLoading && card" class="nft-card">
+        <img :src="card.logo_url" alt="Card symbol image" />
+        <h3>{{ card.company_name }} ({{ card.company_symbol }})</h3>
+        <p>{{ card.opinion }}</p>
       </div>
 
-      <div class="skeleton-body">
-        <div class="skeleton-line"></div>
-        <div class="skeleton-line"></div>
-        <div class="skeleton-line"></div>
-      </div>
 
-      <div class="skeleton-body">
-        <div class="skeleton-line"></div>
-      </div>
-
-      <div class="skeleton-body">
-        <div class="skeleton-line"></div>
-        <div class="skeleton-line"></div>
-      </div>
-
-    </div>
-
-    <div v-if="card" class="nft-card">
-      <img :src="card.logo_url" alt="Card symbol image" />
-      <!--<h2>{{ card.company_symbol }}</h2> -->
-      <h3>{{ card.company_name }} ({{ card.company_symbol }})</h3>
-      <p>{{ card.opinion }}</p>
-    </div>
-
-    <div v-if="searchTime" class="search-time">
+    <div v-if="!isLoading && searchTime" class="search-time">
     <p>Completed in {{ searchTime }} seconds</p>
     </div>
 
-    <div v-if="searchTime" class="disclaimer">
+    <div v-if="!isLoading && searchTime" class="disclaimer">
       <p>Please note that the symbol may not up to date. Beacuse this model generally does not possess knowledge of events that have occurred after the vast majority of its training data was collected (i.e., before September 2021), therefore it may not include recent developments or changes in company strategy, market conditions, or other factors that could affect the relevance of these suggested matches.</p>
     </div>
 
@@ -321,11 +316,29 @@ export default {
   width: 100%;
   border: 0px solid #ddd;
   border-radius: 60px;
-  padding: 0.5rem;
-  margin-top: 1rem;
-  margin-left: 1px;
-  margin-right: 1px;
+  padding: 1rem;
+  margin: 1rem auto;
   text-align: center;
+  max-width: 584px;
+}
+
+.search-time {
+  text-align: center;
+  font-size: 15px;
+  color: #555;
+  margin-top: 1rem;
+}
+
+.disclaimer {
+  width: 100%;
+  margin-top: 1rem;
+  padding: .5rem;
+  text-align: center;
+  color: #555;
+  font-size: 12px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  box-sizing: border-box;
   max-width: 584px;
 }
 
@@ -373,23 +386,4 @@ export default {
   }
 }
 
-.search-time {
-  text-align: center;
-  font-size: 15px;
-  color: #555;
-  margin-top: 1rem;
-}
-
-.disclaimer {
-  width: 100%;
-  margin-top: 1rem;
-  padding: .5rem;
-  text-align: center;
-  color: #555;
-  font-size: 12px;
-  background-color: #f0f0f0;
-  border-radius: 10px;
-  box-sizing: border-box;
-  max-width: 584px;
-}
 </style>
