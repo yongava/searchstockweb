@@ -390,5 +390,6 @@ export default {
   background-color: #f0f0f0;
   border-radius: 10px;
   box-sizing: border-box;
+  max-width: 584px;
 }
 </style>
