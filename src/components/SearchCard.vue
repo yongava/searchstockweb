@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <div class="logo-section">
-    <img data-v-f149e288="" src="mascotsmall.png" alt="Discover related stock from your keyword in 10 seconds" id="company-logo" width="150" height="150">
+    <img data-v-f149e288="" src="mascotsmall.png" alt="Discover related stock using your keywords in just a few seconds." id="company-logo" width="150" height="150">
     </div>
     <div class="logo-text">
-        <h2>Discover related stock symbols using your keywords in just a few seconds.</h2>
+        <h2>Discover related stock using your keywords in just a few seconds.</h2>
       </div>
 
     <div class="search-section">
@@ -46,19 +46,33 @@
         </div>
 
     <div v-if="isLoading" class="skeleton">
-      <div class="skeleton-header"></div>
+    <div class="skeleton-header"></div>
+
       <div class="skeleton-body">
         <div class="skeleton-line"></div>
       </div>
+
+      <div class="skeleton-body">
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+      </div>
+
       <div class="skeleton-body">
         <div class="skeleton-line"></div>
       </div>
+
+      <div class="skeleton-body">
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+      </div>
+
     </div>
 
     <div v-if="card" class="nft-card">
-      <!-- <img :src="card.logo_url" alt="Card symbol image" /> -->
-      <h2>{{ card.company_symbol }}</h2>
-      <h3>{{ card.company_name }}</h3>
+      <img :src="card.logo_url" alt="Card symbol image" />
+      <!--<h2>{{ card.company_symbol }}</h2> -->
+      <h3>{{ card.company_name }} ({{ card.company_symbol }})</h3>
       <p>{{ card.opinion }}</p>
     </div>
 
@@ -67,7 +81,7 @@
     </div>
 
     <div v-if="searchTime" class="disclaimer">
-      <p>Please note that this model generally does not possess knowledge of events that have occurred after the vast majority of its training data was collected (i.e., before September 2021), therefore it may not include recent developments or changes in company strategy, market conditions, or other factors that could affect the relevance of these suggested matches.</p>
+      <p>Please note that the symbol may not up to date. Beacuse this model generally does not possess knowledge of events that have occurred after the vast majority of its training data was collected (i.e., before September 2021), therefore it may not include recent developments or changes in company strategy, market conditions, or other factors that could affect the relevance of these suggested matches.</p>
     </div>
 
   </div>
@@ -80,100 +94,107 @@ import mixpanel from 'mixpanel-browser';
 mixpanel.init("e0e5a1748e7a2c12d17361e1c381a326");
 
 export default {
-  data() {
+    data() {
     return {
-      query: '',
-      card: null,
-      isLoading: false,
-      searchTime: null,
-      searchCost: null
+        query: '',
+        card: null,
+        isLoading: false,
+        searchTime: null,
+        searchCost: null,
+        companies: [],
     };
-  },
-  methods: {
+    },
+    async created() {
+    const response = await fetch('/company.json');
+    const data = await response.json();
+    this.companies = data.data.stocks;
+    },
+    methods: {
     async fetchData() {
-    this.isLoading = true;
-    let startTime = new Date().getTime(); 
+        this.isLoading = true;
+        let startTime = new Date().getTime(); 
 
-    let openaikey = process.env.VUE_APP_OPENAI_API_KEY
-    let response;
-    let model_list=["gpt-4"];
-    let result = null;
+        let openaikey = process.env.VUE_APP_OPENAI_API_KEY
+        let response;
+        let model_list=["gpt-4"];
+        let result = null;
 
-
-    for (var i=0; i < model_list.length; i++) {
-        response = await axios.post('https://api.openai.com/v1/chat/completions', {
-        "model": model_list[i],
-        "temperature": 0.1,
-        "messages": [
-          {
-            "role": "system",
-            "content": "You are an API that analyses user input to find tradable businesses most related to cultural, artistic or fictional entities like characters, books or films. You are expected to answer with a stock symbol of the corresponding company. For example, if user asks about 'Harry Potter', you could respond with {'company_symbol': 'T', 'company_name': 'AT&T Inc.', 'opinion': 'Because AT&T owns Warner Bros. which produced the Harry Potter series.'}. If you can't find a related company, respond with {'company_symbol': ' ', 'company_name': ' ', 'opinion': 'Can not find related symbol'}."
-          },
-          {
-            "role": "user",
-            "content": `What is the company that is the most related to : '${this.query}'`
-          }
-        ]
-      }, {
-          headers: { 'Authorization': `Bearer ${openaikey}` }
+        for (var i=0; i < model_list.length; i++) {
+            response = await axios.post('https://api.openai.com/v1/chat/completions', {
+            "model": model_list[i],
+            "temperature": 0.1,
+            "messages": [
+            {
+                "role": "system",
+                "content": "You are an API that analyses user input to find tradable businesses most related to cultural, artistic or fictional entities like characters, books or films. You are expected to answer with a stock symbol of the corresponding company also companyname, companywebsite and your opinion. For example, if user asks about 'Harry Potter', you could respond with {'company_symbol': 'T', 'company_name': 'AT&T Inc.', 'opinion': 'Because AT&T owns Warner Bros. which produced the Harry Potter series.','website':'att.com'}. If you can't find a related company, respond with {'company_symbol': ' ', 'company_name': ' ', 'opinion': 'Can not find related symbol','website':' '}."
+            },
+            {
+                "role": "user",
+                "content": `What is the company that is the most related to : '${this.query}'`
+            }
+            ]
+        }, {
+            headers: { 'Authorization': `Bearer ${openaikey}` }
             });
 
-       const content = response.data['choices'][0]['message']['content'];
+        const content = response.data['choices'][0]['message']['content'];
 
-       try {
-           result = JSON.parse(content.replace(/'/g, '"').replace(/Because/gi, ''));
-       } catch {
-           //console.log("Failed to parse the message content to JSON");
-           this.card = {company_symbol: ' ', company_name: ' ', opinion: ' '};
-           this.card.company_symbol = " OOPS !"
-           this.card.company_name = " Something Went Wrong "
-           this.card.opinion = "Can you try search again please 🥲"
-       }
+        try {
+            result = JSON.parse(content.replace(/'/g, '"').replace(/Because/gi, ''));
+        } catch {
+            this.card = {company_symbol: ' ', company_name: ' ', opinion: ' '};
+            this.card.company_symbol = " OOPS !"
+            this.card.company_name = " Something Went Wrong "
+            this.card.opinion = "Can you try search again please 🥲"
+        }
 
-       // Check if company symbol is available
-       if (result.company_symbol && result.company_symbol != 'None') break;
+        if (result && result.company_symbol && result.company_symbol != 'None') break;
+        }
+
+        if (result && result.company_symbol && result.company_symbol != 'None') {
+
+            let weburl = result['website']
+            if (!weburl.startsWith('http://') && !weburl.startsWith('https://')) {
+                weburl = 'https://' + weburl;
+            }
+
+            const url = new URL(weburl);
+            let domain = url.hostname;
+            let cleanDomain = domain.replace('www.', '');
+            const logoUrl = `https://logo.clearbit.com/${cleanDomain}`;
+            result['logo_url'] = logoUrl.replace(" ", "");
+            this.card = result;
+        } else {
+            this.card = {company_symbol: 'OOPS!', company_name: ' ', opinion: `I cannot find related symbol of : ${this.query}`};
+        }
+
+        this.isLoading = false;
+
+        let endTime = new Date().getTime();
+        this.searchTime = ((endTime - startTime) / 1000).toFixed(2); 
+
+        const total_tokens = response.data['usage']['total_tokens'];
+        
+        const cost = (total_tokens / 1000) * 0.03;
+        
+        this.searchCost = cost
+
+        this.card = result;
+
+        this.$nextTick(() => {
+            document.querySelector(".search-section").scrollIntoView({ behavior: 'smooth' });
+        });
+
+        mixpanel.track("Search Result", {
+          "User Query": this.query,
+          "Company Symbol": this.card.company_symbol,
+          "Company Name": this.card.company_name,
+          "Company Opinion": this.card.opinion,
+          "Process Time": this.searchTime,
+          "Search Cost": this.searchCost
+        });
+
     }
-
-    // If no useful response even after trying with all models provide a fail message.
-    if (result && result.company_symbol && result.company_symbol != 'None') {
-      const logoUrl = `https://logo.clearbit.com/${result['company_symbol']}.com`;
-      result['logo_url'] = logoUrl.replace(" ", "");
-      this.card = result;
-      } else {
-          this.card = {company_symbol: 'OOPS!', company_name: ' ', opinion: `I cannot find related symbol of : ${this.query}`};
-      }
-
-    this.isLoading = false;
-
-    let endTime = new Date().getTime();
-    this.searchTime = ((endTime - startTime) / 1000).toFixed(2); 
-
-    const total_tokens = response.data['usage']['total_tokens'];
-      
-    // Calculate the cost
-    const cost = (total_tokens / 1000) * 0.03;
-    
-    this.searchCost = cost
-
-    const logoUrl = `https://logo.clearbit.com/${result['company_symbol']}.com`;
-    result['logo_url'] = logoUrl.replace(" ", "");
-
-    this.card = result;
-
-    this.$nextTick(() => {
-        document.querySelector(".search-section").scrollIntoView({ behavior: 'smooth' });
-      });
-
-    // Tracking the event
-    mixpanel.track("Search Result", {
-      "User Query": this.query,
-      "Company Symbol": this.card.company_symbol,
-      "Company Name": this.card.company_name,
-      "Company Opinion": this.card.opinion,
-      "Process Time": this.searchTime
-    });
-
-}
 },
 };
 </script>
@@ -298,7 +319,7 @@ export default {
 
 .nft-card {
   width: 100%;
-  border: 1px solid #ddd;
+  border: 0px solid #ddd;
   border-radius: 60px;
   padding: 0.5rem;
   margin-top: 1rem;
