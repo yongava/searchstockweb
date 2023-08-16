@@ -324,7 +324,7 @@ unmounted() {
 }
 
 .quick-fill-buttons button {
-  background-color: #7F4C2D;
+  background-color: #555555;
   color: white;
   border-radius: 10px;
   border: none;
