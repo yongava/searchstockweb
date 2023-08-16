@@ -105,9 +105,9 @@
 <script>
 import axios from 'axios';
 import mixpanel from 'mixpanel-browser';
-import lottie from 'lottie-web';
 
-mixpanel.init("e0e5a1748e7a2c12d17361e1c381a326");
+mixpanel.init("e0e5a1748e7a2c12d17361e1c381a326", { debug: true, track_pageview: true, persistence: 'localStorage' });
+
 
 export default {
     data() {
@@ -121,14 +121,7 @@ export default {
     };
     },
     async created() {
-    // Start the lottie animation
-    lottie.loadAnimation({
-      container: this.$refs.lottie,
-      renderer: "svg",
-      loop: true,
-      autoplay: true,
-      path: "lottie_loading.json",
-    });
+
     const response = await fetch('/company.json');
     const data = await response.json();
     this.companies = data.data.stocks;
@@ -193,8 +186,6 @@ export default {
         }
 
         this.isLoading = false;
-        // If animation still loaded, stop it
-        if (lottie.isLoaded) lottie.stop();
 
         let endTime = new Date().getTime();
         this.searchTime = ((endTime - startTime) / 1000).toFixed(2);
@@ -222,10 +213,6 @@ export default {
 
     }
 },
-unmounted() {
-    // Ensure the animation is stopped when the component is destroyed
-    lottie.destroy();
-  },
 };
 </script>
 
