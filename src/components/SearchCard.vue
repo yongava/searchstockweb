@@ -143,7 +143,7 @@ export default {
       this.isLoading = true;
       let startTime = new Date().getTime();
 
-      if (Object.prototype.hasOwnProperty.call(this.cache, this.query)) {
+      if (Object.prototype.hasOwnProperty.call(this.cache, this.query.toLowerCase())) {
                       this.cards = this.cache[this.query];
                       this.isLoading = false;
                       return;  // Return early since there's no need to make API request
