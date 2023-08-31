@@ -143,14 +143,34 @@ export default {
       this.isLoading = true;
       let startTime = new Date().getTime();
 
-      if (Object.prototype.hasOwnProperty.call(this.cache, this.query.toLowerCase())) {
-                      this.cards = this.cache[this.query];
-                      this.isLoading = false;
-                      return;  // Return early since there's no need to make API request
-                  }
+
+
+      const AIRTABLE_API_KEY = 'patxLuvm6KuQcTlJH.5d79d4572a809a3e47b29d94b0d801f0996fd46a11cd48bff7b2ccee438da0a7';
+      const AIRTABLE_BASE_ID = 'appdSa869fvzr8rGl';
+      const AIRTABLE_TABLE_NAME = 'maintable';
+
+      const airtableInstance = axios.create({
+        baseURL: `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_NAME}`,
+        headers: {
+          'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+      });
+
+      // Fetch cache from Airtable
+      const airtableQuery = "?filterByFormula=" + encodeURIComponent(`SearchQuery='${this.query.toLowerCase()}'`);
+      let airtableRecordsResult = await airtableInstance.get(airtableQuery);
+
+        if (airtableRecordsResult.data.records.length > 0) {
+          this.cards = JSON.parse(airtableRecordsResult.data.records[0].fields.SearchResult);
+          this.isLoading = false;
+          return;  // Return early since there's no need to make API request
+        }
 
 
     let openaikey = process.env.VUE_APP_OPENAI_API_KEY
+
+
     let response;
 
     response = await axios.post('https://api.openai.com/v1/chat/completions', {
@@ -196,6 +216,15 @@ export default {
         });
 
         this.cache[this.query] = this.cards;
+
+
+        airtableInstance.post('/', {
+          fields: {
+            SearchQuery: this.query.toLowerCase(),
+            SearchResult: JSON.stringify(this.cards)
+          }
+        });
+
         this.isLoading = false;
 
         let endTime = new Date().getTime();
@@ -396,6 +425,7 @@ input::placeholder {
     overflow-x: auto;
     gap: 1rem;
     padding: 1rem 0;
+    max-width: 98%;
   }
 
 .nft-card {
@@ -405,7 +435,7 @@ input::placeholder {
   padding: 1rem;
   margin: 1rem auto;
   text-align: center;
-  max-width: 300px;
+  max-width: 90%;
 }
 
 .search-time {
