@@ -82,11 +82,15 @@
     </div>
 
     <!-- NFT Card, visible when isLoading is false -->
-    <div v-if="!isLoading && card" class="nft-card">
-      <img :src="card.logo_url" alt="Card symbol image" />
-      <h3>{{ card.company_name }} ({{ card.company_symbol }})</h3>
-      <p>{{ card.opinion }}</p>
+    <template v-if="!isLoading && cards">
+    <div class="cards-container">
+      <div v-for="(card, cardIndex) in cards" :key="'card-popup-' + cardIndex" class="nft-card">
+        <img width="50" height="50" :src="card.logo_url" alt="Card symbol image" />
+        <h3>{{ card.company_name }} ({{ card.company_symbol }})</h3>
+        <p>{{ card.opinion }}</p>
+      </div>
     </div>
+  </template>
 
     <div v-if="!isLoading && searchTime" class="disclaimer">
       <p class="search-time">Search Completed in {{ searchTime }} seconds</p>
@@ -123,6 +127,7 @@ export default {
         searchTime: null,
         searchCost: null,
         companies: [],
+        cards: []
     };
     },
     async created() {
@@ -134,47 +139,35 @@ export default {
     methods: {
     async fetchData() {
         this.isLoading = true;
-        let startTime = new Date().getTime();
 
-        let openaikey = process.env.VUE_APP_OPENAI_API_KEY
-        let response;
-        let model_list=["gpt-4"];
-        let result = null;
+    let openaikey = process.env.VUE_APP_OPENAI_API_KEY
+    let response;
+    let startTime = new Date().getTime();
 
-        for (var i=0; i < model_list.length; i++) {
-            response = await axios.post('https://api.openai.com/v1/chat/completions', {
-            "model": model_list[i],
-            "temperature": 0.1,
-            "messages": [
-            {
-                "role": "system",
-                "content": "You are an API that analyses user input to find tradable businesses most related to cultural, artistic or fictional entities like characters, books or films. You are expected to answer with a stock symbol of the corresponding company also companyname, companywebsite and your opinion. For example, if user asks about 'Harry Potter', you could respond with {'company_symbol': 'T', 'company_name': 'AT&T Inc.', 'opinion': 'Because AT&T owns Warner Bros. which produced the Harry Potter series.','website':'att.com'}. If you can't find a related company, respond with {'company_symbol': 'None', 'company_name': ' ', 'opinion': 'Can not find related symbol','website':' '}."
-            },
-            {
-                "role": "user",
-                "content": `What is the company that is the most related to : '${this.query}'`
-            }
-            ]
-        }, {
-            headers: { 'Authorization': `Bearer ${openaikey}` }
-            });
+    response = await axios.post('https://api.openai.com/v1/chat/completions', {
+        "model": "gpt-3.5-turbo",
+        "temperature": 0.1,
+        "messages": [
+        {
+            "role": "system",
+            "content": "1. YOU ARE GOD OF US STOCK DATA \n 2. YOU CAN ANSWER ONLY JSON FORMAT \n 3. Get Input -> Find Related Stock -> Answer \n Example : \n \n input : football \n output: {'results' : [{'symbol':'MANU','website':'manu.com','name':'manu inc','reason':'this is football club'},{'symbol':'NKE','website':'nike.com','name':'nike inc','reason':'Nike sell football shoes',{'symbol':'DDA','website':'adidas.com','name':'adidas inc','reason':'adidas sell football jersey'},{'symbol':'UA','website':'ua.com','name':'underarmor inc','reason':'under armor sell football kits'}}]}\n \n input : oatmilk \n output: {'result' : [{'symbol':'OTLY','website':'oatly.com','name':'oatly inc','reason':'Oatly Group produces oat milk'},{'symbol':'HAIN','website':'hain.com','name':'hain inc','reason':'Hain Celestial Group produces oat milk products'},{'symbol':'DANOY','website':'danoy.com','name':'danone inc','reason':'Danone provides plant-based alternatives including oat milk'},{'symbol':'SBUX','website':'starbuck.com','name':'starbucks inc','reason':'Starbucks offers oat milk options in their beverages'}]} (((use double qoute in json string)))"
+        },
+        {
+            "role": "user",
+            "content": `What is the companies that is the most related to : '${this.query}'`
+        }
+        ]
+    }, {
+        headers: { 'Authorization': `Bearer ${openaikey}` }
+        });
 
         const content = response.data['choices'][0]['message']['content'];
 
-        try {
-            result = JSON.parse(content.replace(/'/g, '"').replace(/Because/gi, ''));
-        } catch {
-            this.card = {company_symbol: ' ', company_name: ' ', opinion: ' '};
-            this.card.company_symbol = " OOPS !"
-            this.card.company_name = " Something Went Wrong "
-            this.card.opinion = "Can you try search again please 🥲"
-        }
+        console.log(content)
 
-        if (result && result.company_symbol && result.company_symbol != 'None') break;
-        }
+        let parsedContent = JSON.parse(content);
 
-        if (result && result.company_symbol && result.company_symbol != 'None') {
-
+        this.cards = parsedContent.results.map(result => { 
             let weburl = result['website']
             if (!weburl.startsWith('http://') && !weburl.startsWith('https://')) {
                 weburl = 'https://' + weburl;
@@ -183,13 +176,15 @@ export default {
             const url = new URL(weburl);
             let domain = url.hostname;
             let cleanDomain = domain.replace('www.', '');
-            const logoUrl = `https://logo.clearbit.com/${cleanDomain}`;
-            result['logo_url'] = logoUrl.replace(" ", "");
-            this.card = result;
-        } else {
-            this.card = {company_symbol: 'OOPS!', company_name: ' ', opinion: `I cannot find related symbol of : ${this.query}`};
-        }
+            const logoUrl = `https://logo.clearbit.com/${cleanDomain}`.replace(" ", "");
 
+            return {
+                logo_url: logoUrl,
+                company_symbol: result.symbol,
+                company_name: result.name,
+                opinion: result.reason
+            }; 
+        });
         this.isLoading = false;
 
         let endTime = new Date().getTime();
@@ -201,20 +196,19 @@ export default {
 
         this.searchCost = cost
 
-        this.card = result;
-
         this.$nextTick(() => {
             document.querySelector(".search-section").scrollIntoView({ behavior: 'smooth' });
         });
 
         mixpanel.track("Search Result", {
-          "User Query": this.query,
-          "Company Symbol": this.card.company_symbol,
-          "Company Name": this.card.company_name,
-          "Company Opinion": this.card.opinion,
-          "Process Time": this.searchTime,
-          "Search Cost": this.searchCost
-        });
+        "User Query": this.query,
+        // use a comma-separated string of company symbols, names and opinions
+        "Company Symbol": this.cards.map(card => card.company_symbol).join(", "),
+        "Company Name": this.cards.map(card => card.company_name).join(", "),
+        "Company Opinion": this.cards.map(card => card.opinion).join(", "),
+        "Process Time": this.searchTime,
+        "Search Cost": this.searchCost
+      });
 
     }
 },
@@ -386,14 +380,21 @@ input::placeholder {
   font-size: 10px; //update this
 }
 
+.cards-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+
 .nft-card {
+  flex: 0 0 auto; /* Allow cards to shrink but not to grow, effectively disabling stretching in the flexbox layout */
   border: 0px solid #ddd;
   border-radius: 60px;
   padding: 1rem;
   margin: 1rem auto;
   text-align: center;
-  max-width: 584px;
-  margin-bottom: 2rem;
+  max-width: 300px;
 }
 
 .search-time {
@@ -405,7 +406,7 @@ input::placeholder {
 
 .disclaimer {
   width: 100%;
-  margin-top: -1.5rem;
+  margin-top: 0rem;
   padding: 0.5rem;
   text-align: center;
   color: #555;
