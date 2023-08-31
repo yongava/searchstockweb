@@ -85,7 +85,7 @@
     <template v-if="!isLoading && cards">
     <div class="cards-container">
       <div v-for="(card, cardIndex) in cards" :key="'card-popup-' + cardIndex" class="nft-card">
-        <img width="50" height="50" :src="card.logo_url" alt="Card symbol image" />
+        <img width="50" height="50" :src="card.logo_url" alt="" />
         <h3>{{ card.company_name }} ({{ card.company_symbol }})</h3>
         <p>{{ card.opinion }}</p>
       </div>
@@ -154,12 +154,12 @@ export default {
     let response;
 
     response = await axios.post('https://api.openai.com/v1/chat/completions', {
-        "model": "gpt-3.5-turbo",
+        "model": "gpt-4",
         "temperature": 0.1,
         "messages": [
         {
             "role": "system",
-            "content": "1. YOU ARE GOD OF US STOCK DATA \n 2. YOU CAN ANSWER ONLY JSON FORMAT \n 3. Get Input -> Find Related Stock -> Answer \n Example : \n \n input : football \n output: {'results' : [{'symbol':'MANU','website':'manu.com','name':'manu inc','reason':'this is football club'},{'symbol':'NKE','website':'nike.com','name':'nike inc','reason':'Nike sell football shoes',{'symbol':'DDA','website':'adidas.com','name':'adidas inc','reason':'adidas sell football jersey'},{'symbol':'UA','website':'ua.com','name':'underarmor inc','reason':'under armor sell football kits'}}]}\n \n input : oatmilk \n output: {'result' : [{'symbol':'OTLY','website':'oatly.com','name':'oatly inc','reason':'Oatly Group produces oat milk'},{'symbol':'HAIN','website':'hain.com','name':'hain inc','reason':'Hain Celestial Group produces oat milk products'},{'symbol':'DANOY','website':'danoy.com','name':'danone inc','reason':'Danone provides plant-based alternatives including oat milk'},{'symbol':'SBUX','website':'starbuck.com','name':'starbucks inc','reason':'Starbucks offers oat milk options in their beverages'}]} (((use double qoute in json string)))"
+            "content": "1. YOU ARE GOD OF US STOCK DATA \n 2. YOU CAN ANSWER ONLY JSON FORMAT \n 3. Get Input -> Find Related Stock as most as you can ordered by most related-> Answer \n Example : \n \n input : football \n output: {'results' : [{'symbol':'MANU','website':'manu.com','name':'manu inc','reason':'this is football club'},{'symbol':'NKE','website':'nike.com','name':'nike inc','reason':'Nike sell football shoes',{'symbol':'DDA','website':'adidas.com','name':'adidas inc','reason':'adidas sell football jersey'},{'symbol':'UA','website':'ua.com','name':'underarmor inc','reason':'under armor sell football kits'}}]}\n \n input : oatmilk \n output: {'result' : [{'symbol':'OTLY','website':'oatly.com','name':'oatly inc','reason':'Oatly Group produces oat milk'},{'symbol':'HAIN','website':'hain.com','name':'hain inc','reason':'Hain Celestial Group produces oat milk products'},{'symbol':'DANOY','website':'danoy.com','name':'danone inc','reason':'Danone provides plant-based alternatives including oat milk'},{'symbol':'SBUX','website':'starbuck.com','name':'starbucks inc','reason':'Starbucks offers oat milk options in their beverages'}]} (((use double qoute in json string)))"
         },
         {
             "role": "user",
