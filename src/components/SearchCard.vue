@@ -127,7 +127,8 @@ export default {
         searchTime: null,
         searchCost: null,
         companies: [],
-        cards: []
+        cards: [],
+        cache: {}
     };
     },
     async created() {
@@ -138,11 +139,19 @@ export default {
     },
     methods: {
     async fetchData() {
-        this.isLoading = true;
+
+      this.isLoading = true;
+      let startTime = new Date().getTime();
+
+      if (Object.prototype.hasOwnProperty.call(this.cache, this.query)) {
+                      this.cards = this.cache[this.query];
+                      this.isLoading = false;
+                      return;  // Return early since there's no need to make API request
+                  }
+
 
     let openaikey = process.env.VUE_APP_OPENAI_API_KEY
     let response;
-    let startTime = new Date().getTime();
 
     response = await axios.post('https://api.openai.com/v1/chat/completions', {
         "model": "gpt-3.5-turbo",
@@ -185,6 +194,8 @@ export default {
                 opinion: result.reason
             }; 
         });
+
+        this.cache[this.query] = this.cards;
         this.isLoading = false;
 
         let endTime = new Date().getTime();
